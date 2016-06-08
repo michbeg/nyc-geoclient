@@ -5,13 +5,16 @@ nyc_geoclient.api
 """
 
 import requests
+import sys
 
-from urllib import urlencode
+if sys.version_info[0] == 2:
+    from urllib import urlencode
+else:
+    from urllib.parse import urlencode
 
 class Geoclient(object):
     """
     This object's methods provide access to the NYC Geoclient REST API.
-
     You must have registered an app with the NYC Developer Portal
     (http://developer.cityofnewyork.us/api/geoclient-api-beta), and make sure
     that you check off access to the Geoclient API for the application.  Take
@@ -20,11 +23,9 @@ class Geoclient(object):
     will receive an email when this happens.  There isn't any indication of
     your status on the dashboard, but all requests will return a 403 until you
     are approved.
-
     All methods return a dict, whether or not the geocoding succeeded.  If it
     failed, the dict will have a `message` key with information on why it
     failed.
-
     :param app_id:
         Your NYC Geoclient application ID.
     :param app_key:
@@ -60,7 +61,6 @@ class Geoclient(object):
         """
         Given a valid address, provides blockface-level, property-level, and
         political information.
-
         :param houseNumber:
             The house number to look up.
         :param street:
@@ -68,7 +68,6 @@ class Geoclient(object):
         :param borough:
             The borough to look within.  Must be 'Bronx', 'Brooklyn',
             'Manhattan', 'Queens', or 'Staten Island' (case-insensitive).
-
         :returns: A dict with blockface-level, property-level, and political
             information.
         """
@@ -78,17 +77,14 @@ class Geoclient(object):
     def address_zip(self, houseNumber, street, zip):
         """
         Like the above address function, except it uses "zip code" instead of borough
-
         :param houseNumber:
             The house number to look up.
         :param street:
             The name of the street to look up
         :param zip:
             The zip code of the address to look up.
-
         :returns: A dict with blockface-level, property-level, and political
             information.
-
         """
         return self._request(u'address', houseNumber=houseNumber, street=street, zip=zip)
 
@@ -96,7 +92,6 @@ class Geoclient(object):
         """
         Given a valid borough, block, and lot provides property-level
         information.
-
         :param borough:
             The borough to look within.  Must be 'Bronx', 'Brooklyn',
             'Manhattan', 'Queens', or 'Staten Island' (case-insensitive).
@@ -104,7 +99,6 @@ class Geoclient(object):
             The tax block to look up.
         :param lot:
             The tax lot to look up.
-
         :returns: A dict with property-level information.
         """
         return self._request(u'bbl', borough=borough, block=block, lot=lot)
@@ -113,10 +107,8 @@ class Geoclient(object):
         """
         Given a valid building identification number (BIN) provides
         property-level information.
-
         :param bin:
             The BIN to look up.
-
         :returns: A dict with property-level information.
         """
         return self._request(u'bin', bin=bin)
@@ -127,7 +119,6 @@ class Geoclient(object):
         """
         Given a valid borough, "on street" and cross streets provides
         blockface-level information.
-
         :param onStreet:
             "On street" (street name of target blockface).
         :param crossStreetOne:
@@ -146,7 +137,6 @@ class Geoclient(object):
         :param compassDirection:
             (optional) Used to request information about only one side of the
             street. Valid values are: N, S, E or W.
-
         :returns: A dict with blockface-level information.
         """
         return self._request(u'blockface', onStreet=onStreet,
@@ -162,7 +152,6 @@ class Geoclient(object):
         """
         Given a valid borough and cross streets returns information for the
         point defined by the two streets.
-
         :param crossStreetOne:
             First cross street
         :param crossStreetTwo:
@@ -178,7 +167,6 @@ class Geoclient(object):
         :param compassDirection:
             (optional) Optional. for most requests. Required for streets that
             intersect more than once. Valid values are: N, S, E or W.
-
         :returns: A dict with intersection-level information.
         """
         return self._request(u'intersection', crossStreetOne=crossStreetOne,
@@ -190,13 +178,11 @@ class Geoclient(object):
     def place(self, name, borough):
         """
         Same as 'Address' above using well-known NYC place name for input.
-
         :param name:
             Place name of well-known NYC location.
         :param borough:
             Must be 'Bronx', 'Brooklyn', 'Manhattan', 'Queens', or 'Staten
             Island' (case-insensitive).
-
         :returns: A dict with place-level information.
         """
         return self._request(u'place', name=name, borough=borough)
