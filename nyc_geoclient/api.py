@@ -51,7 +51,7 @@ class Geoclient(object):
         })
 
         # Ensure no 'None' values are sent to server
-        for k in kwargs.keys():
+        for k in list(kwargs.keys()):
             if kwargs[k] is None:
                 kwargs.pop(k)
 
