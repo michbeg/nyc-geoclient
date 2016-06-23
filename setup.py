@@ -9,12 +9,10 @@ try:
     ] }
 except ImportError:
     from distutils.core import setup
-    # print('No setuptools.  Do\n\n    $ pip install -I requirements.txt\n\n\nto install dependencies.')
+    print 'No setuptools.  Do\n\n    $ pip install -I requirements.txt\n\n\nto install dependencies.'
     kw = {}
 
-with open("nyc_geoclient/version.py") as f:
-    code = compile(f.read(), "nyc_geoclient/version.py", 'exec')
-    exec(code)
+execfile('nyc_geoclient/version.py')
 
 packages = ['nyc_geoclient']
 
