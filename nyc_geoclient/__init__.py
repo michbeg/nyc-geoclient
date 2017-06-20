@@ -1,1 +1,1 @@
-from api import *
+from nyc_geoclient.api import *
